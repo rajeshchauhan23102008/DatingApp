@@ -1,0 +1,4 @@
+--INSERT Into public."Values"("Name") SELECT ('Rajesh');
+--INSERT Into public."Values"("Name") VALUES ('Suresh');
+--INSERT Into "Values"("Name") VALUES ('Sachin');
+--SELECT * from "Values";
