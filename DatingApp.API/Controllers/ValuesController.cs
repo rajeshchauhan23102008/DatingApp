@@ -20,6 +20,7 @@ namespace DatingApp.API.Controllers
             _dbcontext = dbcontext;
         }
         // GET api/values
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Get()
         {
