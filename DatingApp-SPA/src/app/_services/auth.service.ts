@@ -24,14 +24,7 @@ export class AuthService {
     }
 
     register(model: any) {
-        return this.http.post(this.baseUrl + 'register', model)
-            .pipe(
-                map((response: any) => {
-                    console.log('user has been successfully registered');
-                }
-
-                )
-            );
+        return this.http.post(this.baseUrl + 'register', model);
     }
 
 

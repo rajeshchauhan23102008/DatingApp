@@ -19,7 +19,7 @@ export class RegisterComponent {
                 console.log('User successfully Register!!!');
             },
             error => {
-                console.log('Error Registering User, Please try after sometime!!!');
+                console.log(error);
             });
 
         console.log(this.model);
