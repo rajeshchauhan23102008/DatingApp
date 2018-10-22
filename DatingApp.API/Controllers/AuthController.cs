@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,10 +29,12 @@ namespace DatingApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
-            var user = await _repo.Login(userLoginDto.Username.ToLower()
-                                    ,userLoginDto.Password.ToLower());
+            throw new Exception("Computer Says No to Crackers this Diwali!!!");
 
-            if(user != null)
+            var user = await _repo.Login(userLoginDto.Username.ToLower()
+                                    , userLoginDto.Password.ToLower());
+
+            if (user != null)
             {
                 //Generate and Send JWT Token to Client.        
                 var claims = new[] {
@@ -43,9 +46,10 @@ namespace DatingApp.API.Controllers
                     Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token")
                     .Value));
 
-                var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha512Signature);
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-                var tokenDescriptor = new SecurityTokenDescriptor{
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
                     Subject = new ClaimsIdentity(claims),
                     Expires = DateTime.Now.AddDays(1),
                     SigningCredentials = creds
@@ -55,12 +59,14 @@ namespace DatingApp.API.Controllers
 
                 var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 
-                return Ok(new {
+                return Ok(new
+                {
                     token = tokenHandler.WriteToken(token)
                 });
             }
 
-            return Unauthorized();            
+            return Unauthorized();
+
         }
 
         [HttpPost("register")]
@@ -73,16 +79,17 @@ namespace DatingApp.API.Controllers
 
             // Check Username already exists or not.
 
-            if( await _repo.IsUserNameExists(userForRegisterDto.Username))
+            if (await _repo.IsUserNameExists(userForRegisterDto.Username))
                 return BadRequest($"Username {userForRegisterDto.Username} Already Exists");
 
             // Map UI data to domain model.
-            var userToCreate = new User{
-                Username = userForRegisterDto.Username        
-            };  
+            var userToCreate = new User
+            {
+                Username = userForRegisterDto.Username
+            };
 
             // Call repository to Register User.
-            var createdUser =_repo.Register(userToCreate, userForRegisterDto.Password);
+            var createdUser = _repo.Register(userToCreate, userForRegisterDto.Password);
 
             // Send Output.
 
@@ -90,5 +97,5 @@ namespace DatingApp.API.Controllers
         }
     }
 
-   
+
 }
