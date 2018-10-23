@@ -29,8 +29,6 @@ namespace DatingApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
-            throw new Exception("Computer Says No to Crackers this Diwali!!!");
-
             var user = await _repo.Login(userLoginDto.Username.ToLower()
                                     , userLoginDto.Password.ToLower());
 
