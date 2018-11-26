@@ -17,6 +17,7 @@ import { MemberListComponent } from './member-list/member-list.component';
 import { AuthService } from './_services/auth.service';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { AlertifyService } from './_services/alertify.service';
+import { AuthGuard } from './_guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { AlertifyService } from './_services/alertify.service';
   providers: [
     AuthService,
     ErrorInterceptorProvider,
-    AlertifyService
+    AlertifyService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
