@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
-    'providedIn': 'root'
+    providedIn: 'root'
 })
 export class AuthService {
     baseUrl = 'http://localhost:8000/api/auth/';
