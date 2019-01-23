@@ -6,6 +6,7 @@ import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { JwtModule } from '@auth0/angular-jwt';
+import {NgxGalleryModule} from 'ngx-gallery';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -22,6 +23,7 @@ import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { AlertifyService } from './_services/alertify.service';
 import { AuthGuard } from './_guards/auth.guard';
 import { UserService } from './_services/user.service';
+import {MemberDetailResolver} from './_resolvers/member-detail.resolver';
 
 // export function tokenGetter(): string {
 //   return localStorage.getItem('token');
@@ -55,14 +57,16 @@ import { UserService } from './_services/user.service';
         blacklistedRoutes: ['localhost:8000/api/auth/']
       }
     }),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    NgxGalleryModule
   ],
   providers: [
     AuthService,
     ErrorInterceptorProvider,
     AlertifyService,
     AuthGuard,
-    UserService
+    UserService,
+    MemberDetailResolver
   ],
   bootstrap: [AppComponent]
 })

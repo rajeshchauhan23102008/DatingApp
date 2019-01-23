@@ -7,6 +7,7 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MessagesComponent } from './messages/messages.component';
 import { MemberDetailComponent } from '../app/members/member-detail/member-detail.component';
 
+import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 
 export const appRoutes: Routes = [
     { path: '', component: HomeComponent },
@@ -17,7 +18,11 @@ export const appRoutes: Routes = [
         children: [
             { path: 'lists', component: ListsComponent },
             { path: 'members', component: MemberListComponent },
-            { path: 'members/:id', component: MemberDetailComponent},
+            {
+                path: 'members/:id', component: MemberDetailComponent, resolve: {
+                    user: MemberDetailResolver
+                }
+            },
             { path: 'messages', component: MessagesComponent },
         ]
     },
