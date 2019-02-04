@@ -11,7 +11,8 @@ export class MemberListComponent implements OnInit {
 
     users: User[];
 
-    constructor(private userService: UserService, private alertify: AlertifyService) { }
+    constructor(private userService: UserService, private alertify: AlertifyService) {
+     }
 
     ngOnInit() {
         this.loadUsers();
