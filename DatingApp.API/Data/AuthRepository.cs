@@ -15,6 +15,15 @@ namespace DatingApp.API.Data
             _dbcontext = dbcontext;
         }
 
+// //For Testing Only.
+//         public async Task<bool> AuthDummy(){
+//             return await IsTrue();
+//         }
+
+//         public Task<bool> IsTrue(){
+//             return Task.Run(() => true);
+//         }
+
         public async Task<bool> IsUserNameExists(string username)
         {
             return await _dbcontext.Users.AnyAsync(u => u.Username == username);
