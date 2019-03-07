@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { JwtModule } from '@auth0/angular-jwt';
 import {NgxGalleryModule} from 'ngx-gallery';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -18,6 +19,7 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 
 import { AuthService } from './_services/auth.service';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
@@ -43,7 +45,8 @@ import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
     MessagesComponent,
     MemberCardComponent,
     MemberDetailComponent,
-    MemberEditComponent
+    MemberEditComponent,
+    PhotoEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,7 @@ import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
     RouterModule.forRoot(appRoutes),
     JwtModule.forRoot({
       config: {
-        //tokenGetter : tokenGetter,
+        // tokenGetter : tokenGetter,
         tokenGetter: () => {
           return localStorage.getItem('token');
         },
@@ -62,7 +65,8 @@ import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
       }
     }),
     TabsModule.forRoot(),
-    NgxGalleryModule
+    NgxGalleryModule,
+    FileUploadModule
   ],
   providers: [
     AuthService,

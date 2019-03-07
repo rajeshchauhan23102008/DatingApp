@@ -43,8 +43,9 @@ namespace DatingApp.API.Controllers
 
         }
 
-        [HttpGet("{id}",Name="GetPhoto")]
-        public async Task<IActionResult> GetPhoto(int id){
+        [HttpGet("{id}", Name = "GetPhoto")]
+        public async Task<IActionResult> GetPhoto(int id)
+        {
             /* 
             Route user(RouteAtCreated) to HTTPGet Controller to send the Uploaded Phota details along with HTTP Location Header details that points to the PhotoURL on Cloudinary Server.
 
@@ -134,7 +135,7 @@ namespace DatingApp.API.Controllers
             photoForCreationDto.DateAdded = DateTime.Now;
             photoForCreationDto.PublicId = uploadResult.PublicId;
             photoForCreationDto.Url = uploadResult.Uri.ToString();
-            
+
             // build entity model from PhotoDto.
             var photoForRepo = _mapper.Map<Photo>(photoForCreationDto);
 
@@ -166,7 +167,46 @@ namespace DatingApp.API.Controllers
 
         }
 
+        [HttpPost("{photoid}/setMain")]
+        public async Task<IActionResult> SetUserMainPhoto(int userid, int photoid)
+        {
 
+            // Validation Checks First.
+            // Unauthorize if validation fails.
+
+            // userid in route matches token userid.
+            if (userid != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            // get user.
+            var userFromRepo = await _userDatingRepo.GetUser(userid);
+
+            // photoid belongs to user. 
+            if (!userFromRepo.Photos.Any(p => p.Id == photoid))
+                return Unauthorized();
+
+            var userNewMainPhotoFromRepo = await _userDatingRepo.GetPhoto(photoid);
+
+            // photo is already main photo.
+            if (userNewMainPhotoFromRepo.IsMain == true)
+                return BadRequest("Photo is already Main Photo!!!");
+
+            // get existing main photo and set it to false.
+            // var userOldMainPhotoFromRepo = await _userDatingRepo.GetPhoto(userFromRepo.Photos.FirstOrDefault(p => p.IsMain).Id);
+
+            var userOldMainPhotoFromRepo = await _userDatingRepo.GetUserMainPhoto(userid);
+            userOldMainPhotoFromRepo.IsMain = false;
+
+            // set new photo to main as per the user request.
+            userNewMainPhotoFromRepo.IsMain = true;
+
+            // Save Repository.
+            if (await _userDatingRepo.SaveAll())
+                return NoContent();
+
+            // badrequest and other error exception in case of any issue performing the function.
+            return BadRequest("Unable to set Main Photo for User");
+        }
 
 
     }

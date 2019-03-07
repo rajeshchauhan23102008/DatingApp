@@ -15,7 +15,7 @@ export class MemberEditComponent implements OnInit {
 
     @ViewChild('editForm') editForm: NgForm;
     user: User;
-    @HostListener('window:beforeunload',['$event']) OnBrowserClose($event: any) {
+    @HostListener('window:beforeunload', ['$event']) OnBrowserClose($event: any) {
         if (this.editForm.dirty) {
             $event.returnValue = true;
         }
@@ -41,6 +41,10 @@ export class MemberEditComponent implements OnInit {
                 this.alertifyService.error(error);
             }
         );
+    }
+
+    onMainPhotoChanged(eventData: string) {
+        this.user.photoUrl = eventData;
     }
 
 }
