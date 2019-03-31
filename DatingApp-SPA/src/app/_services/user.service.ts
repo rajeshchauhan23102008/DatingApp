@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../_models/user';
 
 // const httpOptions = {
@@ -35,5 +35,9 @@ export class UserService {
 
     setUserMainPhoto(userid: number, photoid: number) { 
         return this.http.post(this.baseUrl + 'users/' + userid + '/photos/' + photoid + '/setMain', { });
+    }
+
+    deleteUserPhoto(userid: number, photoid: number) {
+        return this.http.delete(this.baseUrl + 'users/' + userid + '/photos/' + photoid);
     }
 }

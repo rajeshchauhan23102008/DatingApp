@@ -15,14 +15,14 @@ namespace DatingApp.API.Data
             _dbcontext = dbcontext;
         }
 
-// //For Testing Only.
-//         public async Task<bool> AuthDummy(){
-//             return await IsTrue();
-//         }
+        // //For Testing Only.
+        //         public async Task<bool> AuthDummy(){
+        //             return await IsTrue();
+        //         }
 
-//         public Task<bool> IsTrue(){
-//             return Task.Run(() => true);
-//         }
+        //         public Task<bool> IsTrue(){
+        //             return Task.Run(() => true);
+        //         }
 
         public async Task<bool> IsUserNameExists(string username)
         {
@@ -31,7 +31,7 @@ namespace DatingApp.API.Data
 
         public async Task<User> Login(string username, string password)
         {
-            var user = await _dbcontext.Users
+            var user = await _dbcontext.Users.Include(u => u.Photos)
                             .FirstOrDefaultAsync(u => u.Username == username);
 
             var passwordHash = ComputePasswordHash(password, user.PasswordSalt);

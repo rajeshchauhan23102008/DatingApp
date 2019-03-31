@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -208,6 +209,63 @@ namespace DatingApp.API.Controllers
             return BadRequest("Unable to set Main Photo for User");
         }
 
+        [HttpDelete("{photoid}")]
+        public async Task<IActionResult> DeletePhoto(int userid, int photoid)
+        {
 
+            // Validation: Check if userid sent in URL is matched with user in token.
+            if (userid != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            // Get User from Repo.
+            var user = await _userDatingRepo.GetUser(userid);
+
+            // Validation: photo belogs to user or not.
+            if (!user.Photos.Any(p => p.Id == photoid))
+                return Unauthorized();
+
+            // Get User Photo From Repo.
+            var userPhoto = await _userDatingRepo.GetPhoto(photoid);
+
+            // Validation: Photo should not be User Main Photo.
+            if (userPhoto.IsMain)
+                return BadRequest("Cannot delete User Main Photo!!!");
+
+            // Check if User Photo is from Cloudinary or from Random User API (used at the start of the api)
+
+            if (!string.IsNullOrWhiteSpace(userPhoto.PublicId))
+            {
+                // Delete User Photo from Cloudinary.
+
+                // var delResParams = new DelResParams()
+                // {
+                //     PublicIds = new List<string> { userPhoto.PublicId }
+                // };
+
+                // var delResResult = _cloudinary.DeleteResources(delResParams);
+
+
+                //if (delResResult.StatusCode == HttpStatusCode.OK)
+
+                var deletionResult = _cloudinary.Destroy(new DeletionParams(userPhoto.PublicId));
+
+                if (deletionResult.Result == "ok")
+                {
+                    // Delete User Photo from Repo.
+                    _userDatingRepo.Delete(userPhoto);
+                }
+            }
+            else
+            {
+                // Delete User Photo from Repo.
+                _userDatingRepo.Delete(userPhoto);
+
+            }
+
+            if (await _userDatingRepo.SaveAll())
+                return Ok();
+
+            return BadRequest("Unable to delete user Photo, Please try again later!!!");
+        }
     }
 }

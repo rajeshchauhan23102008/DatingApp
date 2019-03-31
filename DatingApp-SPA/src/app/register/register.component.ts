@@ -18,11 +18,9 @@ export class RegisterComponent {
     register() {
         this.auth.register(this.model).subscribe(
             next => {
-                console.log('User successfully Register!!!');
                 this.alertifyService.success('User successfully Register!!!');
             },
             error => {
-                console.log(error);
                 this.alertifyService.error(error);
             });
 
@@ -31,7 +29,6 @@ export class RegisterComponent {
 
     cancel() {
         this.cancelRegistration.emit(false);
-        console.log('cancelled');
         this.alertifyService.message('cancelled');
     }
 }
