@@ -6,12 +6,15 @@ import { AlertifyService } from '../../_services/alertify.service';
 import { AuthService } from '../../_services/auth.service';
 import { NgForm } from '@angular/forms';
 
+import { CanComponentDeactivate } from '../../_guards/prevent-unsaved-changes.guard';
+import { Observable } from 'rxjs';
+
 @Component({
     selector: 'app-member-edit',
     templateUrl: './member-edit.component.html',
     styleUrls: ['./member-edit.component.css']
 })
-export class MemberEditComponent implements OnInit {
+export class MemberEditComponent implements OnInit, CanComponentDeactivate {
 
     @ViewChild('editForm') editForm: NgForm;
     user: User;
@@ -35,6 +38,14 @@ export class MemberEditComponent implements OnInit {
             }
         );
 
+    }
+
+    canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+        if (this.editForm.dirty) {
+            return confirm('You have unsaved changes, click CANCEL if you want to save those changes.');
+        }
+
+        return true;
     }
 
     updateUser() {

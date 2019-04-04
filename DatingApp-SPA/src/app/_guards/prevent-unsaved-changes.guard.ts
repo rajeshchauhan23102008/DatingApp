@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate, ActivatedRouteSnapshot } from '@angular/router';
-import { MemberEditComponent } from '../members/member-edit/member-edit.component';
+import { Observable } from 'rxjs';
+
+export interface CanComponentDeactivate {
+    canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
+}
 
 @Injectable()
-export class PreventUnsavedChangesGuard implements CanDeactivate<MemberEditComponent> {
+export class PreventUnsavedChangesGuard implements CanDeactivate<CanComponentDeactivate> {
 
-    canDeactivate(component: MemberEditComponent): boolean {
+    canDeactivate(component: CanComponentDeactivate): Observable<boolean> | Promise<boolean> | boolean {
 
-        if (component.editForm.dirty) {
-            return confirm('You have unsaved changes, click CANCEL if you want to save those changes.');
-        }
+        return component.canDeactivate();
 
-        return true;
     }
 }
