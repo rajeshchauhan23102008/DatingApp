@@ -9,4 +9,6 @@ import { User } from '../../_models/user';
 export class MemberCardComponent {
     @Input() user: User;
 
+    defaultPhoto: string = '../../../assets/user.png';
+
 }

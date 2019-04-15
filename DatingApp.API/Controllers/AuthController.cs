@@ -75,8 +75,8 @@ namespace DatingApp.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
-            // if (! ModelState.IsValid)
-            //     return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
 
@@ -86,17 +86,23 @@ namespace DatingApp.API.Controllers
                 return BadRequest($"Username {userForRegisterDto.Username} Already Exists");
 
             // Map UI data to domain model.
-            var userToCreate = new User
-            {
-                Username = userForRegisterDto.Username
-            };
+            // var userToCreate = new User
+            // {
+            //     Username = userForRegisterDto.Username
+            // };
+
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
             // Call repository to Register User.
             var createdUser = _repo.Register(userToCreate, userForRegisterDto.Password);
 
             // Send Output.
 
-            return StatusCode(201);
+            // return StatusCode(201);
+
+            var createdUserResult = _mapper.Map<UserForDetailedDto>(createdUser);
+
+            return CreatedAtRoute("GetUser", new { id = createdUser.Id }, createdUserResult);
         }
     }
 

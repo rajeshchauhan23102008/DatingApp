@@ -54,11 +54,11 @@ export class PhotoEditorComponent implements OnInit {
 
                 //this.mainPhotoChanged.emit(photo.url);
 
-                // emit User main photo changed event (this event is located in user service).
                 this.authService.currentUser.photoUrl = photo.url;
 
                 localStorage.setItem('currentUser', JSON.stringify(this.authService.currentUser));
 
+                // emit User main photo changed event (this event is located in user service).
                 this.authService.photoUrl.next(photo.url);
             },
             error => {
@@ -100,6 +100,17 @@ export class PhotoEditorComponent implements OnInit {
                 // };
 
                 this.photos.push(res);
+
+                if (res.isMain) {
+                    this.authService.currentUser.photoUrl = res.url;
+
+                    localStorage.setItem('currentUser', JSON.stringify(this.authService.currentUser));
+
+                    // emit User main photo changed event (this event is located in user service).
+                    this.authService.photoUrl.next(res.url);
+
+                }
+
             } else {
                 this.alertify.error('unable to upload the photos');
             }
