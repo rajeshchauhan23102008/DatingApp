@@ -102,7 +102,7 @@ namespace DatingApp.API.Controllers
 
             var createdUserResult = _mapper.Map<UserForDetailedDto>(createdUser);
 
-            return CreatedAtRoute("GetUser", new { id = createdUser.Id }, createdUserResult);
+            return CreatedAtRoute("GetUser", new { controller= "Users",  id = createdUser.Id }, createdUserResult);
         }
     }
 

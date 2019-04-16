@@ -17,8 +17,16 @@
             [ngClass]="{ 'is-invalid': registerForm.get('username').errors && registerForm.get('username').touched }"
             placeholder="username" formControlName="username">
 
-        <div class="invalid-feedback">Please choose a Username</div>
+        <div class="invalid-feedback" >Username is required</div>
     </div>
+
+    <!-- <div class="form-group">
+        <input type="text" class="form-control"
+            [ngClass]="{ 'is-invalid': true }"
+            placeholder="username" formControlName="username">
+
+        <div class="invalid-feedback" >Username is required</div>
+    </div> -->
 
     <div class="form-group">
         <input type="text" class="form-control" placeholder="knownAs" formControlName="knownAs"
