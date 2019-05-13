@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { BsDropdownModule, TabsModule, BsDatepickerModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -30,6 +30,7 @@ import { UserService } from './_services/user.service';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
+import { MemberListResolver } from '../app/_resolvers/member-list.resolver';
 
 // export function tokenGetter(): string {
 //   return localStorage.getItem('token');
@@ -57,6 +58,8 @@ import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
     ReactiveFormsModule,
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot(),
+    ButtonsModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     JwtModule.forRoot({
       config: {
@@ -80,7 +83,8 @@ import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
     UserService,
     MemberDetailResolver,
     MemberEditResolver,
-    PreventUnsavedChangesGuard
+    PreventUnsavedChangesGuard,
+    MemberListResolver
   ],
   bootstrap: [AppComponent]
 })
