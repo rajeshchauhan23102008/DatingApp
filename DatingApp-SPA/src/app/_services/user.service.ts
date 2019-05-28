@@ -21,10 +21,10 @@ export class UserService {
 
     constructor(private http: HttpClient) { }
 
-    getUsers(pageNumber?: number, pageSize?: number, userParams?: any): Observable<PaginatedResult<User[]>> {
+    getUsers(pageNumber?: number, pageSize?: number, userParams?: any, likeParams?: string): Observable<PaginatedResult<User[]>> {
         //return this.http.get<User[]>(this.baseUrl + 'users', httpOptions);
 
-        let httpParams: HttpParams = this.setupHttpParams(pageNumber, pageSize, userParams);
+        let httpParams: HttpParams = this.setupHttpParams(pageNumber, pageSize, userParams, likeParams);
 
         return this.http.get<User[]>(this.baseUrl + 'users', {
             params: httpParams,
@@ -43,7 +43,7 @@ export class UserService {
         }));
     }
 
-    private setupHttpParams(pageNumber: number, pageSize: number, userParams: any) {
+    private setupHttpParams(pageNumber: number, pageSize: number, userParams: any, likeParams: string) {
         let httpParams: HttpParams = new HttpParams();
         if (pageNumber) {
             httpParams = httpParams.append('pageNumber', pageNumber.toString());
@@ -69,6 +69,16 @@ export class UserService {
             }
         }
 
+        if (likeParams) {
+            if (likeParams === 'likers') {
+                httpParams = httpParams.append('likers', 'true');
+            }
+
+            if (likeParams === 'likees') {
+                httpParams = httpParams.append('likees', 'true');
+            }
+        }
+
         return httpParams;
     }
 
@@ -87,5 +97,9 @@ export class UserService {
 
     deleteUserPhoto(userid: number, photoid: number) {
         return this.http.delete(this.baseUrl + 'users/' + userid + '/photos/' + photoid);
+    }
+
+    sendLike(id: number, recipientid: number) {
+        return this.http.post(`${this.baseUrl}users/${id}/like/${recipientid}`, {});
     }
 }

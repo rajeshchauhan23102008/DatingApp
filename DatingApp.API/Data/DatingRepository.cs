@@ -48,6 +48,22 @@ namespace DatingApp.API.Data
             // gender filtering.
             users = users.Where(u => u.Gender == userParams.gender);
 
+            // likers filtering.
+            if (userParams.likers)
+            {
+                var userLikers = await GetUserLikes(userParams.userId, true);
+                users = users.Where(u => userLikers.Contains(u.Id));
+                // users = users.Where(u => userLikers.Any(l => l == u.Id));
+            }
+
+            // likees filtering.
+            if (userParams.likees)
+            {
+                var userLikees = await GetUserLikes(userParams.userId, false);
+                users = users.Where(u => userLikees.Contains(u.Id));
+                // users = users.Where(u => userLikees.Any(l => l == u.Id));
+            }
+
             // Min and Max Age Filtering.
             if (userParams.minAge >= 18 && userParams.maxAge <= 99)
             {
@@ -75,6 +91,20 @@ namespace DatingApp.API.Data
             return userPagedList;
         }
 
+        public async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
+        {
+            var user = await _dbcontext.Users
+                .Include(u => u.Likers)
+                .Include(u => u.Likees)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (likers)
+                return user.Likees.Select(l => l.LikerId);
+            else
+                return user.Likers.Select(l => l.LikeeId);
+
+        }
+
         public async Task<Photo> GetPhoto(int id)
         {
             return await _dbcontext.Photos.FirstOrDefaultAsync(p => p.Id == id);
@@ -87,6 +117,13 @@ namespace DatingApp.API.Data
         public async Task<bool> SaveAll()
         {
             return await _dbcontext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<Like> GetLike(int id, int recepientId)
+        {
+            return await _dbcontext.Likes
+                .Where(l => l.LikerId == id && l.LikeeId == recepientId)
+                .FirstOrDefaultAsync();
         }
     }
 }

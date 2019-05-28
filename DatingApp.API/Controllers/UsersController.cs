@@ -28,6 +28,36 @@ namespace DatingApp.API.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost("{id}/Like/{recepientid}")]
+        public async Task<IActionResult> SendLike(int id, int recepientId)
+        {
+            // User is Authorize to do this operation.
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            // User already liked this RecepientUser.
+            if (await _datingRepo.GetLike(id, recepientId) != null)
+                return BadRequest("You have already like this user");
+
+            // Recepient User exists or not.
+            if (await _datingRepo.GetUser(recepientId) == null)
+                return NotFound();
+
+            // Add Like in Repository.
+            var newLike = new Like
+            {
+                LikerId = id,
+                LikeeId = recepientId
+            };
+
+            _datingRepo.Add<Like>(newLike);
+
+            if (await _datingRepo.SaveAll())
+                return Ok();
+
+            return BadRequest("Failed to like this user");
+        }
+
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
