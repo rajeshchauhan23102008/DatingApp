@@ -24,12 +24,12 @@ namespace DatingApp.API.Helpers
 
         public static async Task<PagedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
         {
-            var itemCount = await source.CountAsync();
+            // var itemCount = await source.CountAsync();
             var items = await source
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize).ToListAsync();
 
-            return new PagedList<T>(items, pageNumber, pageSize, itemCount);
+            return new PagedList<T>(items, pageNumber, pageSize, items.Count());
 
         }
     }
