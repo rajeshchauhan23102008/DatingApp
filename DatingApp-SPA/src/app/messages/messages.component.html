@@ -1,1 +1,72 @@
-messages component works!!!
+<div class="container mt-3">
+    <div class="row">
+        <div class="col">
+
+            <!-- // buttons. -->
+            <div class="btn-group" btnRadioGroup [(ngModel)]="messageType">
+                <button btnRadio="unread" class="btn btn-info" role="button" (click)="loadMessages()">
+                    <i class="fa fa-envelope"></i> Unread</button>
+                <button btnRadio="inbox" class="btn btn-info" role="button" (click)="loadMessages()">
+                    <i class="fa fa-envelope-open"></i> Inbox</button>
+                <button btnRadio="outbox" class="btn btn-info" role="button" (click)="loadMessages()">
+                    <i class="fa fa-paper-plane"></i>Outbox</button>
+            </div>
+
+            <!-- // message if no messages available. -->
+            <div class="m-2 text-center" *ngIf="!messages || messages.length == 0">
+                <h2>No Messages Found!!!</h2>
+            </div>
+
+            <div *ngIf="messages && messages.length > 0">
+                <!-- // message table. -->
+                <div class="mt-2">
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Message</th>
+                                <th scope="col" *ngIf="messageType == 'unread' || messageType == 'inbox'">From</th>
+                                <th scope="col" *ngIf="messageType == 'outbox'">To</th>
+                                <th scope="col" *ngIf="messageType == 'unread' || messageType == 'inbox'">Receive
+                                </th>
+                                <th scope="col" *ngIf="messageType == 'outbox'">Sent</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let message of messages">
+                                <td>{{ message.content }}</td>
+                                <td>
+                                    <div *ngIf="messageType == 'inbox' || messageType == 'unread'">
+                                        <a [routerLink]="['/members/',message.senderId]">
+                                            <img [src]="message.senderPhotoUrl"><br>
+                                            <strong>{{ message.senderKnownAs }}</strong>
+                                        </a>
+                                    </div>
+                                    <div *ngIf="messageType == 'outbox'">
+                                        <a [routerLink]="['/members/', message.recipientId]">
+                                            <img [src]="message.recipientPhotoUrl"><br>
+                                            <strong>{{message.recipientKnownAs}}</strong>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>{{message.messageSent | date: "medium" }}<br>({{ message.messageSent | timeAgo}})
+                                </td>
+                                <td><button class="btn btn-danger">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- // pagination control. -->
+
+                <div>
+                    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" previousText="&lsaquo;"
+                        nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"
+                        [itemsPerPage]="pagination.pageSize" [(ngModel)]="pagination.pageNumber">
+
+                    </pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../_models/user';
 import { PaginatedResult } from '../_models/pagination';
 import { map } from 'rxjs/operators';
+import { Message } from '../_models/message';
 
 // const httpOptions = {
 //     headers: new HttpHeaders({
@@ -24,7 +25,7 @@ export class UserService {
     getUsers(pageNumber?: number, pageSize?: number, userParams?: any, likeParams?: string): Observable<PaginatedResult<User[]>> {
         //return this.http.get<User[]>(this.baseUrl + 'users', httpOptions);
 
-        let httpParams: HttpParams = this.setupHttpParams(pageNumber, pageSize, userParams, likeParams);
+        let httpParams: HttpParams = this.setupHttpParamsForUsers(pageNumber, pageSize, userParams, likeParams);
 
         return this.http.get<User[]>(this.baseUrl + 'users', {
             params: httpParams,
@@ -43,7 +44,7 @@ export class UserService {
         }));
     }
 
-    private setupHttpParams(pageNumber: number, pageSize: number, userParams: any, likeParams: string) {
+    private setupHttpParamsForUsers(pageNumber: number, pageSize: number, userParams: any, likeParams: string) {
         let httpParams: HttpParams = new HttpParams();
         if (pageNumber) {
             httpParams = httpParams.append('pageNumber', pageNumber.toString());
@@ -101,5 +102,38 @@ export class UserService {
 
     sendLike(id: number, recipientid: number) {
         return this.http.post(`${this.baseUrl}users/${id}/like/${recipientid}`, {});
+    }
+    getMessages(id: number, pageNumber?: number, pageSize?: number, messageType?: string): Observable<PaginatedResult<Message[]>> {
+
+        // Setup HTTP Params.
+        const httpParams: HttpParams = this.setupHttpParamsForGetMessages(pageNumber, pageSize, messageType);
+
+        return this.http.get<Message[]>(`${this.baseUrl}users/${id}/messages`
+            , { params: httpParams, observe: 'response' }).pipe(
+                map(
+                    res => {
+
+                        const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
+
+                        paginatedResult.result = res.body;
+
+                        if (res.headers.get('Pagination'))
+                            paginatedResult.pagination = JSON.parse(res.headers.get('Pagination'));
+
+                        return paginatedResult;
+                    }
+                )
+            );
+    }
+
+    private setupHttpParamsForGetMessages(pageNumber: number, pageSize: number, messageType: string) {
+        let httpParams: HttpParams = new HttpParams();
+        if (pageNumber)
+            httpParams = httpParams.append('pagenumber', pageNumber.toString());
+        if (pageSize)
+            httpParams = httpParams.append('pagesize', pageSize.toString());
+        if (messageType)
+            httpParams = httpParams.append('messagetype', messageType);
+        return httpParams;
     }
 }

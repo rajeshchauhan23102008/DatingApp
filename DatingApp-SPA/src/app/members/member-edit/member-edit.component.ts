@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 })
 export class MemberEditComponent implements OnInit, CanComponentDeactivate {
 
-    @ViewChild('editForm') editForm: NgForm;
+    @ViewChild('editForm', { static: true }) editForm: NgForm;
     user: User;
     @HostListener('window:beforeunload', ['$event']) OnBrowserClose($event: any) {
         if (this.editForm.dirty) {
