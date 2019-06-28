@@ -114,7 +114,6 @@ export class UserService {
                     res => {
 
                         const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
-
                         paginatedResult.result = res.body;
 
                         if (res.headers.get('Pagination'))
@@ -135,5 +134,22 @@ export class UserService {
         if (messageType)
             httpParams = httpParams.append('messagetype', messageType);
         return httpParams;
+    }
+
+    getUserMessageThread(id: number, recipientid: number): Observable<Message[]> {
+
+        return this.http.get<Message[]>(`${this.baseUrl}users/${id}/messages/thread/${recipientid}`);
+    }
+
+    sendMessage(id: number, recipientid: number, content: string) {
+        return this.http.post(`${this.baseUrl}users/${id}/messages`, { recipientid: recipientid, content: content });
+    }
+
+    deleteMessage(id: number, messageId: number) {
+        return this.http.delete(`${this.baseUrl}users/${id}/messages/${messageId}`);
+    }
+
+    readMessage(id: number, messageId: number) {
+        return this.http.post(`${this.baseUrl}users/${id}/messages/${messageId}/read`, {});
     }
 }

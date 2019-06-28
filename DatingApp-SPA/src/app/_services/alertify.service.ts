@@ -7,10 +7,12 @@ declare let alertify: any;
 export class AlertifyService {
 
     confirm(message: string, okCallback: () => any) {
-        alertify.confirm(message, function (e) {
+        alertify.confirm('DatingApp', message, function (e) {
             if (e) {
                 okCallback();
             } else { }
+        }, function (e) {
+
         });
     }
 

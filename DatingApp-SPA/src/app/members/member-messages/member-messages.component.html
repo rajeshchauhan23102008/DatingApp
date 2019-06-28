@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col">
+        <div class="messaging">
+            <div *ngIf="messages?.length === 0">
+                <h5>No messages yet... say hi by using the messagebox below.</h5>
+            </div>
+            <div *ngIf="messages?.length > 0" class="inbox_msg">
+                <div class="mesgs">
+                    <div class="msg_history" *ngFor="let message of messages;">
+                        <div *ngIf="message.senderId === recipientId" class="incoming_msg">
+                            <div class="incoming_msg_img"> <img src="{{message.senderPhotoUrl}}"
+                                    alt="{{message.senderKnownAs}}"> </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>{{message.content}}</p>
+                                    <span class="time_date"> {{message.messageSent | timeAgo}}
+                                        <span class="text-danger">(Read on {{message.dateRead | timeAgo }})</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="message.senderId !== recipientId" class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>{{message.content}}</p>
+                                <span class="time_date"> {{message.messageSent | timeAgo}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="type_msg">
+                <form #sendMsgForm="ngForm" (ngSubmit)="onSubmit(sendMsgForm)">
+                    <div class="input_msg_write form-group">
+                        <input type="text" class="write_msg form-control" required maxlength="100" ngModel
+                            name="message" placeholder="Type a message" />
+                        <button class="btn btn-primary" type="submit" [disabled]="!sendMsgForm.valid"><i
+                                class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+
+                        <!-- msg_send_btn -->
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

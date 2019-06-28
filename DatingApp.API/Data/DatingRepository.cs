@@ -134,6 +134,7 @@ namespace DatingApp.API.Data
         {
 
             var messages = _dbcontext.Messages
+                                .Where( m=> m.SenderDeleted == false || m.RecipientDeleted == false)
                                 .Include(m => m.Sender).ThenInclude(u => u.Photos)
                                 .Include(m => m.Recipient).ThenInclude(u => u.Photos)
                                 .AsQueryable();

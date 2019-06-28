@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -26,6 +27,59 @@ namespace DatingApp.API.Controllers
         {
             _repo = repo;
             _mapper = mapper;
+        }
+
+        [HttpPost("{messageId}/read")]
+        public async Task<IActionResult> ReadMessage(int userId, int messageId)
+        {
+            //Validation Check.
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var message = await _repo.GetMessage(messageId);
+
+            if (message == null)
+                return BadRequest("Message Not Found");
+
+            if (!(message.RecipientId == userId))
+                return Unauthorized();
+
+            if (message.RecipientId == userId && message.RecipientDeleted == true)
+                return BadRequest("Cannot Read a Deleted Message");
+
+            message.IsRead = true;
+            message.DateRead = DateTime.Now;
+
+            await _repo.SaveAll();
+
+            return NoContent();
+
+        }
+
+        [HttpDelete("{messageId}")]
+        public async Task<IActionResult> DeleteMessage(int userId, int messageId)
+        {
+            // Validation Check.
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var message = await _repo.GetMessage(messageId);
+
+            if (message == null)
+                return BadRequest("Message Not Found");
+            else if (!(message.SenderId == userId || message.RecipientId == userId))
+                return Unauthorized();
+
+            if (message.SenderId == userId && message.SenderDeleted == false)
+                message.SenderDeleted = true;
+            else if (message.RecipientId == userId && message.RecipientDeleted == false)
+                message.RecipientDeleted = true;
+
+            if (await _repo.SaveAll())
+                return NoContent();
+
+            return BadRequest("Error deleting message, Please try again later");
+
         }
 
         // SendMessage.

@@ -34,6 +34,14 @@ export class MessagesComponent implements OnInit {
 
     }
 
+    // markMsgAsRead(message: Message) {
+
+    //     if ((this.messageType === 'unread' || this.messageType === 'inbox') && message.isRead === false) {
+    //         this.userService.readMessage(this.authService.decodedToken.nameid, message.id).subscribe();
+
+    //     }
+    // }
+
     loadMessages() {
 
         this.userService.getMessages(this.authService.decodedToken.nameid, this.pagination.pageNumber,
@@ -52,6 +60,27 @@ export class MessagesComponent implements OnInit {
         this.pagination.pageNumber = event.page;
 
         this.loadMessages();
+    }
+
+    deleteMessage(messageId: number) {
+
+        this.alertify.confirm('Are you sure you really want to delete this message?', () => {
+
+            this.userService.deleteMessage(this.authService.decodedToken.nameid, messageId).subscribe(
+                () => {
+
+                    // Remove message from the message[].
+                    const indexId = this.messages.findIndex((value) => value.id === messageId);
+                    this.messages.splice(indexId, 1);
+
+                    this.alertify.success('Message successfully deleted!!!');
+
+                },
+                (error) => {
+                    this.alertify.error(error);
+                });
+        });
+
     }
 
 }
