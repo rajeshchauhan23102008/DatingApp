@@ -39,6 +39,10 @@ import { MessageListResolver } from './_resolvers/message-list.resolver';
 //   return localStorage.getItem('token');
 // }
 
+export function tokenGetter(): string {
+  return localStorage.getItem('token');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,10 +71,10 @@ import { MessageListResolver } from './_resolvers/message-list.resolver';
     RouterModule.forRoot(appRoutes),
     JwtModule.forRoot({
       config: {
-        // tokenGetter : tokenGetter,
-        tokenGetter: () => {
-          return localStorage.getItem('token');
-        },
+        tokenGetter: tokenGetter,
+        // tokenGetter: () => {
+        //   return localStorage.getItem('token');
+        // },
         whitelistedDomains: ['localhost:8000'],
         blacklistedRoutes: ['localhost:8000/api/auth/']
       }
