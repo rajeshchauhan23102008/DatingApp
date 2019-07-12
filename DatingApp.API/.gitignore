@@ -3,4 +3,4 @@ bin
 obj
 *.db
 dist
-wwwroot
+/wwwroot
