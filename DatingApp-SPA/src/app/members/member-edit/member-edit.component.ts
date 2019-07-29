@@ -49,7 +49,7 @@ export class MemberEditComponent implements OnInit, CanComponentDeactivate {
     }
 
     updateUser() {
-        console.log(this.user);
+        // console.log(this.user);
 
         this.userService.updateUser(this.authService.decodedToken.nameid, this.user).subscribe(
             next => {

@@ -19,7 +19,7 @@
     },
     "DatingApp.API": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:9000",
+      "applicationUrl": "http://localhost:8000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       }

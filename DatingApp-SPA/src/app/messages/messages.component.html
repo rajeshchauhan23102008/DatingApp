@@ -65,7 +65,7 @@
                 <!-- // pagination control. -->
 
                 <div class="d-flex justify-content-center">
-                    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" previousText="&lsaquo;"
+                    <pagination [boundaryLinks]="true" [totalItems]="pagination.itemCount" previousText="&lsaquo;"
                         nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"
                         [itemsPerPage]="pagination.pageSize" [(ngModel)]="pagination.pageNumber">
 

@@ -25,10 +25,9 @@ export class ListsComponent implements OnInit {
 
         this.activatedRoute.data.subscribe(
             (data) => {
-
-                this.pagination = data['users'].pagination;
-                this.users = data['users'].result;
-
+                // console.log(data);
+                this.pagination = data['users'].pagination as Pagination;
+                this.users = data['users'].result as User[];
             },
             (error) => {
                 this.route.navigate(['./home']);
