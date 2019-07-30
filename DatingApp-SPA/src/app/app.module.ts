@@ -35,11 +35,14 @@ import { MemberListResolver } from '../app/_resolvers/member-list.resolver';
 import { ListResolver } from './_resolvers/lists.resolver';
 import { MessageListResolver } from './_resolvers/message-list.resolver';
 
+import { DatingAppUIConfig } from '../assets/config';
+
 // export function tokenGetter(): string {
 //   return localStorage.getItem('token');
 // }
 
 export function tokenGetter(): string {
+  console.log(DatingAppUIConfig.whitelistedDomainsName, DatingAppUIConfig.blacklistedRoutesName);
   return localStorage.getItem('token');
 }
 
@@ -75,8 +78,8 @@ export function tokenGetter(): string {
         // tokenGetter: () => {
         //   return localStorage.getItem('token');
         // },
-        whitelistedDomains: ['localhost:8000'],
-        blacklistedRoutes: ['localhost:8000/api/auth/']
+        whitelistedDomains: DatingAppUIConfig.whitelistedDomainsName,
+        blacklistedRoutes: DatingAppUIConfig.blacklistedRoutesName
       }
     }),
     TabsModule.forRoot(),

@@ -1,4 +1,6 @@
+import { DatingAppUIConfig } from '../assets/config';
+
 export const environment = {
   production: true,
-  apiBaseUrl: 'api/'
+  apiBaseUrl: `${DatingAppUIConfig.apiBaseURL}api/`
 };
