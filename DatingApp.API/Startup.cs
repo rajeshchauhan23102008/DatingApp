@@ -35,16 +35,13 @@ namespace DatingApp.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x =>
                 x.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
                 .ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.IncludeIgnoredWarning))
                 );
-            if (env.IsDevelopment())
-            {
-                services.AddCors();
-            }
+            // services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                     .AddJsonOptions(options =>
                         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
