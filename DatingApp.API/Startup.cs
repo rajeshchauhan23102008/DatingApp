@@ -101,10 +101,10 @@ namespace DatingApp.API
             //app.UseHttpsRedirection();
             //seeder.SeedUserData();
 
-            if (env.IsDevelopment())
-            {
-                app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            // }
             app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
