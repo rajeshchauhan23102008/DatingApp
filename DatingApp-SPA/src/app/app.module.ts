@@ -42,7 +42,6 @@ import { DatingAppUIConfig } from '../assets/config';
 // }
 
 export function tokenGetter(): string {
-  console.log(DatingAppUIConfig.whitelistedDomainsName, DatingAppUIConfig.blacklistedRoutesName);
   return localStorage.getItem('token');
 }
 
