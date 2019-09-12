@@ -31,7 +31,7 @@ namespace DatingApp.API.Data
 
         public async Task<User> Login(string username, string password)
         {
-            var user = await _dbcontext.Users.Include(u => u.Photos)
+            var user = await _dbcontext.Users
                             .FirstOrDefaultAsync(u => u.Username == username);
 
             var passwordHash = ComputePasswordHash(password, user.PasswordSalt);

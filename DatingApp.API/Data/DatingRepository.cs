@@ -29,7 +29,6 @@ namespace DatingApp.API.Data
         public async Task<User> GetUser(int id)
         {
             var user = await _dbcontext.Users
-                .Include(u => u.Photos)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             return user;
@@ -38,7 +37,7 @@ namespace DatingApp.API.Data
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
             //var users = await _dbcontext.Users.Include(u => u.Photos).ToListAsync();
-            var users = _dbcontext.Users.Include(u => u.Photos).OrderByDescending(u => u.LastActive).AsQueryable();
+            var users = _dbcontext.Users.OrderByDescending(u => u.LastActive).AsQueryable();
 
             /* Implements filters */
 
@@ -101,8 +100,6 @@ namespace DatingApp.API.Data
         public async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
         {
             var user = await _dbcontext.Users
-                .Include(u => u.Likers)
-                .Include(u => u.Likees)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (likers)
@@ -125,8 +122,6 @@ namespace DatingApp.API.Data
         public async Task<Message> GetMessage(int id)
         {
             return await _dbcontext.Messages
-                .Include(m => m.Sender).ThenInclude(u => u.Photos)
-                .Include(m => m.Recipient).ThenInclude(u => u.Photos)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -135,8 +130,6 @@ namespace DatingApp.API.Data
 
             var messages = _dbcontext.Messages
                                 .Where( m=> m.SenderDeleted == false || m.RecipientDeleted == false)
-                                .Include(m => m.Sender).ThenInclude(u => u.Photos)
-                                .Include(m => m.Recipient).ThenInclude(u => u.Photos)
                                 .AsQueryable();
 
             switch (messageParams.MessageType)
@@ -162,8 +155,6 @@ namespace DatingApp.API.Data
         {
 
             return await _dbcontext.Messages
-                            .Include(m => m.Sender).ThenInclude(u => u.Photos)
-                            .Include(m => m.Recipient).ThenInclude(u => u.Photos)
                             .Where(m => m.SenderId == userId && m.RecipientId == recipientId && m.SenderDeleted == false
                                    || m.RecipientId == userId && m.SenderId == recipientId && m.RecipientDeleted == false)
                             .OrderByDescending(m => m.MessageSent)

@@ -39,9 +39,8 @@ namespace DatingApp.API
         {
             services.AddDbContext<DataContext>(x =>
                 x.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
-                .ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.IncludeIgnoredWarning))
                 );
-            // services.AddCors();
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                     .AddJsonOptions(options =>
                         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
@@ -99,23 +98,26 @@ namespace DatingApp.API
             }
 
             //app.UseHttpsRedirection();
-            //seeder.SeedUserData();
+            // seeder.SeedUserData();
 
             // if (env.IsDevelopment())
             // {
-            //     app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             // }
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             app.UseAuthentication();
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-            app.UseMvc(
-                routes =>
-                {
-                    routes.MapSpaFallbackRoute(
-                        name: "spa-fallback",
-                        defaults: new { controller = "FallbackSPA", action = "Index" });
-                });
-            // app.UseMvc();
+            // app.UseDefaultFiles();
+            // app.UseStaticFiles();
+            // app.UseMvc(
+            //     routes =>
+            //     {
+            //         routes.MapSpaFallbackRoute(
+            //             name: "spa-fallback",
+            //             defaults: new { controller = "FallbackSPA", action = "Index" });
+            //     });
+            app.UseMvc();
         }
     }
 }

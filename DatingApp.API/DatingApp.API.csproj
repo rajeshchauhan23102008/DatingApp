@@ -11,5 +11,6 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" version="2.1.3" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" version="2.1.3" />
   </ItemGroup>
 </Project>

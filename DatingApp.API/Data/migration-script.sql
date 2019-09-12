@@ -11,7 +11,7 @@ CREATE TABLE "Values" (
 );
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20180921053617_InitialScript', '2.2.4-servicing-10062');
+VALUES ('20180921053617_InitialScript', '2.2.6-servicing-10079');
 
 CREATE TABLE "Users" (
     "Id" serial NOT NULL,
@@ -22,17 +22,17 @@ CREATE TABLE "Users" (
 );
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20180928055946_AddedUserEntity', '2.2.4-servicing-10062');
+VALUES ('20180928055946_AddedUserEntity', '2.2.6-servicing-10079');
 
 ALTER TABLE "Users" RENAME COLUMN "Password" TO "PasswordHash";
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20180928064957_UserPasswordColumnNameRenamed', '2.2.4-servicing-10062');
+VALUES ('20180928064957_UserPasswordColumnNameRenamed', '2.2.6-servicing-10079');
 
 ALTER TABLE "Users" RENAME COLUMN "Name" TO "Username";
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20180930060506_UserEntityUpdated', '2.2.4-servicing-10062');
+VALUES ('20180930060506_UserEntityUpdated', '2.2.6-servicing-10079');
 
 ALTER TABLE "Users" ADD "City" text NULL;
 
@@ -68,12 +68,12 @@ CREATE TABLE "Photos" (
 CREATE INDEX "IX_Photos_UserId" ON "Photos" ("UserId");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20181130184912_ExtendedUserModel', '2.2.4-servicing-10062');
+VALUES ('20181130184912_ExtendedUserModel', '2.2.6-servicing-10079');
 
 ALTER TABLE "Photos" ADD "PublicId" text NULL;
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20190212143941_AddedPublicIDColumnInPhotoTable', '2.2.4-servicing-10062');
+VALUES ('20190212143941_AddedPublicIDColumnInPhotoTable', '2.2.6-servicing-10079');
 
 CREATE TABLE "Likes" (
     "LikerId" integer NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE "Likes" (
 CREATE INDEX "IX_Likes_LikeeId" ON "Likes" ("LikeeId");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20190524151504_UserLikeFunctionalityAdded', '2.2.4-servicing-10062');
+VALUES ('20190524151504_UserLikeFunctionalityAdded', '2.2.6-servicing-10079');
 
 CREATE TABLE "Messages" (
     "Id" serial NOT NULL,
@@ -108,5 +108,5 @@ CREATE INDEX "IX_Messages_RecipientId" ON "Messages" ("RecipientId");
 CREATE INDEX "IX_Messages_SenderId" ON "Messages" ("SenderId");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20190607062340_MessagesTableAdded', '2.2.4-servicing-10062');
+VALUES ('20190607062340_MessagesTableAdded', '2.2.6-servicing-10079');
 
